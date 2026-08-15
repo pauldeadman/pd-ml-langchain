@@ -8,3 +8,8 @@
 ## Simple Agent
 
 [Agent to Send Email](LangChain-Validate-Email-gemini.md)
+
+
+## Weather Agent
+
+[Weather Agent api.open-meteo.com](LLM-Gemini-Agent-Weather-pub.ipynb)
