@@ -48,3 +48,64 @@ res=model.invoke(f"What is the weather in Berlin on {datetime.today()}?")
 print(res)
 ```
 
+## Workflow Create State Data
+
+```
+from langchain_core.messages import BaseMessage
+from langgraph.graph.message import add_messages  # helper function to add messages to the state
+class AgentState(TypedDict):
+    """The state of the agent."""
+    messages: Annotated[Sequence[BaseMessage], add_messages]
+    number_of_steps: int
+```
+
+## Workflow Create Basic Model
+
+To make it easier to understand (top down description) we will define the call_model and call_tool later
+
+```
+from langgraph.graph import StateGraph, END
+
+workflow = StateGraph(AgentState)
+workflow.add_node("llm", call_model)
+workflow.add_node("tools",  call_tool)
+```
+
+Define the "START"
+```
+workflow.set_entry_point("llm")
+```
+
+## Workflow Now add an IF statement
+
+A function should_continue will return "continue" if last message is a tool call or "end".
+
+```
+workflow.add_conditional_edges("llm",should_continue,{"continue": "tools","end": END,})
+```
+
+Link node "tools" back to "llm"
+
+```
+workflow.add_edge("tools", "llm")
+```
+
+# Workflow Compile
+
+```
+graph = workflow.compile()
+```
+
+## Workflow Helpers
+
+
+```
+def call_model(
+    state: AgentState,
+    config: RunnableConfig,
+    ):
+    response = model.invoke(state["messages"], config)
+    return {"messages": [response]}
+```
+
+
