@@ -141,3 +141,8 @@ def should_continue(state: AgentState):
         return "end"
     return "continue"
 ```
+
+## Full Implementation
+
+[Open Meteo Weather Agent](https://github.com/pauldeadman/pd-ml-langchain/blob/main/LLM-Gemini-Agent-Weather-pub.ipynb)
+
