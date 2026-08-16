@@ -98,6 +98,7 @@ graph = workflow.compile()
 
 ## Workflow Helpers
 
+This is the easy bit where call_model calls the LLM and returns the full list of messages.
 
 ```
 def call_model(
@@ -108,4 +109,35 @@ def call_model(
     return {"messages": [response]}
 ```
 
+Construct a data model for the tools
 
+```
+tools_by_name = {tool.name: tool for tool in tools}
+```
+
+To iterate over the tools in "last message", using invoke to call the tools with arguments. ToolMessage is a helper from langchain to stitch together the message data. 
+
+```
+def call_tool(state: AgentState):
+    outputs = []
+    for tool_call in state["messages"][-1].tool_calls:
+        tool_result = tools_by_name[tool_call["name"]].invoke(tool_call["args"])
+        outputs.append(
+            ToolMessage(
+                content=tool_result,
+                name=tool_call["name"],
+                tool_call_id=tool_call["id"],
+            )
+        )
+    return {"messages": outputs}
+```
+
+And finally check last message for a "tools_call" in the last message.
+
+```
+def should_continue(state: AgentState):
+    messages = state["messages"]
+    if not messages[-1].tool_calls:
+        return "end"
+    return "continue"
+```
