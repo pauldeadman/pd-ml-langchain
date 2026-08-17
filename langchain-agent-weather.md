@@ -140,10 +140,16 @@ def call_model(
     return {"messages": [response]}
 ```
 
-Construct a data model for the tools
+Construct a data model for the tools, this includes the docstring, which defines the tool functionality and output data model.
+The source is an array of LangChain class "StructuredTool".
 
 ```
 tools_by_name = {tool.name: tool for tool in tools}
+```
+
+The output is
+```
+{'get_weather_forecast': StructuredTool(name='get_weather_forecast', description='Retrieves the weather using Open-Meteo API .......
 ```
 
 To iterate over the tools in "last message", using invoke to call the tools with arguments. ToolMessage is a helper from langchain to stitch together the message data. 
@@ -162,6 +168,26 @@ def call_tool(state: AgentState):
         )
     return {"messages": outputs}
 ```
+
+In the above code, tool_call will be
+```
+{
+    "name": "get_weather_forecast",
+    "args": {
+        "location": "Berlin",
+        "date": "2026-08-17"
+    },
+    "id": "call_3203767",
+    "type": "tool_call"
+}
+```
+
+And the output 
+
+{'2026-08-17T00:00': 19.2, '2026-08-17T01:00': 18.6, '2026-08-17T02:00': 18.0,........
+
+is appended to the message
+
 
 And finally check last message for a "tools_call" in the last message.
 
