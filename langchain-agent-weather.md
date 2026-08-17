@@ -73,6 +73,12 @@ And looking at the data, the name is the function and the args can be passed int
 ]
 ```
 
+## Workflow Design
+
+Now to build a simple Workflow as pictured.
+
+![SimpleAgent](/Images/SimpleWorkflowAgentWeather.png)
+
 ## Workflow Create State Data
 
 ```
