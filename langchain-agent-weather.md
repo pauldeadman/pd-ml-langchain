@@ -48,6 +48,31 @@ res=model.invoke(f"What is the weather in Berlin on {datetime.today()}?")
 print(res)
 ```
 
+It can be seen that the result from the model include a tool_calls list.
+
+```
+res type is: <class 'langchain_core.messages.ai.AIMessage'>
+res.tool_calls type is: <class 'list'>
+tool_calls data: [{'name': 'get_weather_forecast', 'args': {'location': 'Berlin', 'date': '2026-08-17'}, 'id': 'call_1127245', 'type':
+'tool_call'}]
+```
+
+And looking at the data, the name is the function and the args can be passed into to the function.
+
+```
+[
+    {
+        "name": "get_weather_forecast",
+        "args": {
+            "location": "Berlin",
+            "date": "2026-08-17"
+        },
+        "id": "call_1127245",
+        "type": "tool_call"
+    }
+]
+```
+
 ## Workflow Create State Data
 
 ```
