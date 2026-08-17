@@ -9,7 +9,7 @@ geolocator = Nominatim(user_agent="weather-app")
 
 ## Create Tool
 
-The docstring (Retrieves the......for each hour.) is critical as it describes function, input and output. It implicitly is included when the tools array is created, in an array/list of "StructuredTool".
+The docstring (Retrieves the......for each hour.) is critical as it describes function, input and output. The code processing the output from the API must match the description. It implicitly is included when the tools array is created, in an array/list of "StructuredTool".
 
 ```
 @tool("get_weather_forecast", args_schema=SearchInput, return_direct=True)
