@@ -9,9 +9,18 @@ geolocator = Nominatim(user_agent="weather-app")
 
 ## Create Tool
 
+The docstring (Retrieves the......for each hour.) is critical as it describes function, input and output. It implicitly is included when the tools array is created, in an array/list of "StructuredTool".
+
 ```
 @tool("get_weather_forecast", args_schema=SearchInput, return_direct=True)
 def get_weather_forecast(location: str, date: str):
+    """Retrieves the weather using Open-Meteo API.
+
+    Takes a given location (city) and a date (yyyy-mm-dd).
+
+    Returns:
+        A dict with the time and temperature for each hour.
+    """
     location = geolocator.geocode(location)
     if location:
         try:
